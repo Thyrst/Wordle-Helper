@@ -58,11 +58,11 @@ function findWordSuggestion() {
         }
     })
 
-    findBestWord = () => {
+    findBestWord = (wordList) => {
         bestWord = null
         bestScore = 0
 
-        words.forEach((word) => {
+        wordList.forEach((word) => {
             score = 0
             lettersIterated = []
             
@@ -82,14 +82,29 @@ function findWordSuggestion() {
         return bestWord
     }
 
+    hardModeFilter = (word) => {
+        if (present.some((letter) => !word.includes(letter))) {
+            return false
+        }
+        for ([i, letter] of word.entries()) {
+            if (correct[i] && correct[i] !== letter) {
+                return false
+            }
+        }
+        return true
+    }
+
     tip = null
-    triesLeft = currentState.evaluations.reduce((r, v) => r + (v === null), 0)
-    if (triesLeft >= candidates.length || triesLeft === 1) {
-        tip = candidates ? candidates[0] : null
-    } else if (triesLeft === 0) {
+    triesLeft = 6 - currentState.rowIndex
+    if (triesLeft === 0 || currentState.gameStatus !== "IN_PROGRESS") {
         tip = null
+    } else if (triesLeft >= candidates.length || triesLeft === 1) {
+        tip = candidates ? findBestWord(candidates) : null
+    } else if (currentState.hardMode) {
+        hardModeWordList = words.filter(hardModeFilter)
+        tip = findBestWord(hardModeWordList)
     } else {
-        tip = findBestWord()
+        tip = findBestWord(words)
     }
 
     return tip ? tip.join("") : tip

@@ -3,7 +3,6 @@ scriptURL = chrome.runtime.getURL("main.js")
 function init() {
     gameElement = document.querySelector("body > game-app").shadowRoot.querySelector("#game")
 
-
     injectScript = document.createElement("script")
     injectScript.setAttribute("type", "text/javascript")
     injectScript.setAttribute("src", scriptURL)
