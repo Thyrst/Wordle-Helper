@@ -15,9 +15,11 @@ function init() {
     .helper-block {
         position: absolute;
         margin: 15px;
+        color: var(--key-text-color);
     }
     
     .helper-block button {
+        background-color: var(--key-bg);
         font-weight: bold;
         border: 0;
         padding: 5px;
